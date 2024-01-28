@@ -27,7 +27,7 @@ export const useAuthStore = defineStore("authStore", {
         return
       }
       this.user = await res.json()
-      console.log(this.user)
+
 
 
     },

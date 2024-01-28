@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import { reactive } from 'vue'
-import { useAuthStore } from '../stores/authStore'
+import { useAuthStore } from '../../stores/authStore'
 
 const authStore = useAuthStore()
 

@@ -1,10 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import LoginComponent from '../components/LoginComponent'
-import RegisterComponent from '../components/RegisterComponent'
-import AuthLayout from '../components/AuthLayout'
-import RoomsList from '../components/RoomsList'
-import NotFound from '../components/RoomsList'
-import ChatView from '../components/ChatView'
+import LoginComponent from '../components/auth/LoginComponent.vue'
+import RegisterComponent from '../components/auth/RegisterComponent.vue'
+import AuthLayout from '../components/auth/AuthLayout.vue'
+import RoomsList from '../components/room/RoomsList.vue'
+import NotFound from '../components/room/RoomsList.vue'
+import ChatView from '../components/chat/ChatView.vue'
 
 export default createRouter({
     history: createWebHistory(),

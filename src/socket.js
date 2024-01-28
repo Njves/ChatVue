@@ -5,5 +5,5 @@ import { io } from "socket.io-client";
 const URL = 'http://localhost:5000?user_id=1';
 
 export const socket = io(URL, {
-
+    autoConnect: true
 });
