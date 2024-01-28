@@ -11,10 +11,8 @@ import { ref, provide } from "vue"
 import { useAttachmentStore } from "@/stores/attachmentStore";
 
 const attachmentStore = useAttachmentStore()
-const photos = ref([])
 const inputFiles = ref(null)
 const isDragged = ref(false)
-provide('photos', photos)
 
 const uploadFile = (event) => {
 
@@ -23,7 +21,6 @@ const uploadFile = (event) => {
 
   for (let i = 0; i < event.target.files.length; i++) {
     attachmentStore.uploadFile(event.target.files[i])
-    photos.value.push(event.target.files[i])
   }
 
 

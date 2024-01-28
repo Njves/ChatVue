@@ -25,6 +25,7 @@
           <span>{{ message.text }}</span>
         </div>
       </div>
+      <button class="btn btn-danger" @click="messageStore.removeMessage(message)">Удалить</button>
     </div>
   </div>
 </template>
@@ -32,7 +33,8 @@
 <script setup>
 import { defineProps } from 'vue';
 import moment from 'moment';
-
+import { useMessageStore } from "@/stores/messageStore";
+const messageStore = useMessageStore()
 const props = defineProps({
   message: {
     type: Object,

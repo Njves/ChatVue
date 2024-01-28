@@ -1,6 +1,6 @@
 <template>
     <div class="container control-container p-0">
-        <InputMessage/>
+        <InputMessage @onMessageSend="$emit('onMessageSend');console.log('scroll control')"/>
       <AttachedFiles />
     </div>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="attached-files-list d-flex flex-wrap">
     <div
-        v-for="(photo, index) in photos"
+        v-for="(photo, index) in attachmentStore.attachedFiles"
         :key="index"
         class="attached-file">
       <button
@@ -21,7 +21,6 @@ import {useAttachmentStore} from "@/stores/attachmentStore";
 import { inject } from 'vue'
 
 const attachmentStore = useAttachmentStore()
-const photos = inject('photos')
 const getSrc = (photo) => {
   return URL.createObjectURL(photo);
 }

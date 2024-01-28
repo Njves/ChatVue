@@ -2,9 +2,9 @@
   <div class="col-8 chat-window" style="padding: 0">
   <UploadFile />
     <div class="container chat-message" @scroll="onScroll" ref="messageList">
-      <p class="text-center" v-if="roomStore.isEmpty">В комнате нет сообщений</p>
-      <div class="messages">
-        <MessageComponent v-for="message in roomStore.messages" :key="message.id" :message="message" :isSender="message.user.username === 'admin'" />
+      <p class="text-center" v-if="messages.length == 0">В комнате нет сообщений</p>
+      <div class="messages" >
+        <MessageComponent v-for="message in messages" :key="message.id" :message="message" :isSender="message.user.id === authStore.user.id" />
       </div>
       <div class="d-flex justify-content-center" v-if="roomStore.loader">
         <div class="spinner-border" role="status">
@@ -12,27 +12,47 @@
         </div>
       </div>
       <div class="control">
-        <ControlPanel />
+        <ControlPanel @onMessageSend="scrollBottom" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref, watch} from "vue"
+import {ref, watch, defineProps} from "vue"
 import { useRoomStore } from "@/stores/roomStore";
 import MessageComponent from "./MessageComponent.vue";
 import ControlPanel from "./input/ControlPanel.vue";
 import UploadFile from "./input/UploadFile.vue";
-const roomStore = useRoomStore()
+import {useAuthStore} from "@/stores/authStore";
+import {useConnectionStore} from "@/stores/connection";
 
+const roomStore = useRoomStore()
+const authStore = useAuthStore()
+const connectionStore = useConnectionStore()
+
+const props = defineProps({
+  messages: {
+    type: Object,
+    required: true,
+    default: () => { },
+  },
+});
 const messageList = ref(null)
-const files = ref(null)
-watch(() => roomStore.messages, (oldMessage, newMessages) => {
+
+connectionStore.socket.on('notify', (data) => {
   scrollBottom()
-}, {'flush': 'post'})
+})
+connectionStore.socket.on('chat', (data) => {
+  scrollBottom()
+})
+
+watch(() => props.messages, (oldMessage, newMessages) => {
+  scrollBottom()
+}, {flush: 'post'})
 
 const scrollBottom = () => {
+  console.log('scroll')
   messageList.value.scrollTop = messageList.value.scrollHeight
 }
 

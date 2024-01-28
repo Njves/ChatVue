@@ -1,24 +1,28 @@
 import { defineStore } from "pinia";
-import { socket } from "@/socket";
+import { getSocket } from "@/socket";
+import {useAuthStore} from "@/stores/authStore";
 
 export const useConnectionStore = defineStore("connection", {
   state: () => ({
+    authStore: useAuthStore(),
     isConnected: false,
+    socket: null
   }),
 
   actions: {
     bindEvents() {
-      socket.on("connect", () => {
+      this.socket.on("connect", () => {
         this.isConnected = true;
       });
 
-      socket.on("disconnect", () => {
+      this.socket.on("disconnect", () => {
         this.isConnected = false;
       });
     },
 
     connect() {
-      socket.connect();
+      this.socket = getSocket(this.authStore.token)
+      this.socket.connect();
     }
   },
 });
