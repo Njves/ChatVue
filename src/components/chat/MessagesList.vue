@@ -3,9 +3,9 @@
         <MessageMenu :showRemove="showRemove" :messages="selectedMessages.selected" />
         <UploadFile />
         <div class="container chat-message" @scroll="onScroll" ref="messageList">
-            <p class="text-center" v-if="messages.length == 0">В комнате нет сообщений</p>
+            <p class="text-center" v-if="roomStore.messages.length == 0">В комнате нет сообщений</p>
             <div class="messages" >
-                <MessageComponent @click="addToSelect(message)" v-for="message in messages" :key="message.id" :message="message" :isSender="message.user.id === authStore.user.id" />
+                <MessageComponent @click="addToSelect(message)" v-for="message in roomStore.messages" :key="message.id" :message="message" :isSender="message.user.id === authStore.user.id" />
             </div>
             <div class="d-flex justify-content-center" v-if="roomStore.loader">
                 <div class="spinner-border" role="status">
@@ -34,10 +34,9 @@ const authStore = useAuthStore()
 const connectionStore = useConnectionStore()
 
 const props = defineProps({
-    messages: {
-        type: Object,
+    id: {
+        type: Number,
         required: true,
-        default: () => { },
     },
 });
 const showRemove = ref(false)
@@ -50,9 +49,15 @@ watch(selectedMessages.selected,  (newSelected, oldSelected) => {
 })
 
 const addToSelect = (message) => {
+    const index = selectedMessages.selected.indexOf(message)
+    if(index !== -1) {
+        selectedMessages.selected.splice(index, 1)
+        return
+    }
     if(message.user.id === authStore.user.id) {
         selectedMessages.selected.push(message)
     }
+
 }
 connectionStore.socket.on('chat', (data) => {
     scrollBottom()
@@ -61,7 +66,7 @@ connectionStore.socket.on('chat', (data) => {
 watch(() => roomStore.messages, (oldMessage, newMessages) => {
 }, {flush: 'post'})
 
-watch(() => props.messages, (oldMessage, newMessages) => {
+watch(() => roomStore.messages, (oldMessage, newMessages) => {
     scrollBottom()
 }, {flush: 'post'})
 const scrollBottom = () => {
@@ -72,8 +77,8 @@ const scrollBottom = () => {
 
 const onScroll = () => {
     if(messageList.value.scrollTop <= 0 && roomStore.messages) {
-        emit('getMessages')
-        return
+        roomStore.offset += roomStore.count
+        roomStore.getMessages()
     }
 }
 

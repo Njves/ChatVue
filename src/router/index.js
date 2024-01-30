@@ -6,6 +6,7 @@ import AuthLayout from '../components/auth/AuthLayout.vue'
 import RoomsList from '../components/room/RoomsList.vue'
 import NotFound from '../components/room/RoomsList.vue'
 import ChatView from '../components/chat/ChatView.vue'
+import MessagesList from "@/components/chat/MessagesList.vue";
 
 
 export const router = createRouter({
@@ -30,8 +31,14 @@ export const router = createRouter({
         },
         {
             path: '/chat',
-            name: 'chat',
-            component: ChatView
+            component: ChatView,
+            children: [
+                {
+                    name: 'room',
+                    path: ':id',
+                    component: MessagesList,
+                }
+            ]
         },
         {
             path: '/:pathMatch(.*)',

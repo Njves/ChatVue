@@ -1,4 +1,5 @@
 <template>
+    
   <div class="room" :class="{active: room.id === roomStore.currentRoom.id}" @click="$emit('onRoomClick', room)">
     <div class="row">
       <span class="room-name col-auto">{{ room.name }}</span>

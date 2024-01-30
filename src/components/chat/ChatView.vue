@@ -1,20 +1,14 @@
 <template>
     <div class="container-fluid window">
-        <div class="d-flex flex-column" style="font-size: 10px">
-            {{ connectionStore.isConnected }}<br/>
-            {{ authStore.token }}<br/>
-            {{ authStore.user }}<br/>
-            {{ roomStore.currentRoom }}<br/>
-            {{ roomStore.offset }}<br/>
-        </div>
         <div class="row m-1">
             <div class="col-4 room-window" style="padding: 0">
                 <RoomList />
             </div>
-            <MessagesList @getMessages="onGetMoreMessages()" :messages="roomStore.messages"  v-if="roomStore.currentRoom"  />
-            <div class="col-8 no-message" v-else style="padding: 0">
-                <p class="chat-placeholder" >Выберите комнату чтобы увидеть сообщения</p>
-            </div>
+            <router-view > </router-view>
+<!--            <MessagesList " :id="roomStore.messages"  v-if="roomStore.currentRoom"  />-->
+<!--            <div class="col-8 no-message" v-else style="padding: 0">-->
+<!--                <p class="chat-placeholder" >Выберите комнату чтобы увидеть сообщения</p>-->
+<!--            </div>-->
         </div>
     </div>
 </template>
@@ -35,10 +29,6 @@ connectionStore.connect()
 connectionStore.bindEvents()
 
 
-const onGetMoreMessages = () => {
-    roomStore.offset += roomStore.count
-    roomStore.getMessages()
-}
 </script>
 <style>
 

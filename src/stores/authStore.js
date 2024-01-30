@@ -50,7 +50,8 @@ export const useAuthStore = defineStore("authStore", {
                 return
             }
             this.user = await res.json()
-            await router.push('chat')
+            if(router.name === 'login')
+                await router.push('chat')
         },
         getters: {
             isAuth() {

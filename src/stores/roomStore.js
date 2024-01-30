@@ -18,7 +18,7 @@ export const useRoomStore = defineStore("roomStore", {
         isEmpty: true,
         socketStore: useConnectionStore(),
         offset: 0,
-        count: 100
+        count: 20
     }),
 
     actions: {
@@ -44,7 +44,6 @@ export const useRoomStore = defineStore("roomStore", {
             this.roomList = await res.json()
         },
         async getMessages() {
-
             this.loader = true
             if(!this.currentRoom)
                 return
@@ -53,7 +52,7 @@ export const useRoomStore = defineStore("roomStore", {
                 credentials: 'same-origin'
             })
 
-            this.loader = false
+
             if (!res.ok) {
                 this.error = await res.json().error
                 return
@@ -68,6 +67,7 @@ export const useRoomStore = defineStore("roomStore", {
             for(const message in messages) {
                 this.messages.unshift(messages[message])
             }
+            this.loader = false
             return this.messages
         },
         updateLastMessage(message) {

@@ -16,6 +16,7 @@
 import { useRoomStore } from "@/stores/roomStore";
 import Room from "./RoomComponent.vue"
 import {watch} from "vue";
+import {router} from "@/router";
 const roomStore = useRoomStore()
 roomStore.getRooms()
 roomStore.joinRoom()
@@ -26,6 +27,7 @@ watch(() => roomStore.currentRoom, (oldRoom, newRoom) => {
     roomStore.joinRoom()
     roomStore.offset = 0
     roomStore.getMessages()
+    router.push({name: 'room', params: {id: roomStore.currentRoom.id }})
 }, {'deep': 'true'})
 
 
