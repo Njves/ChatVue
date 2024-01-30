@@ -9,15 +9,18 @@
 <script setup>
 import AttachComponent from './AttachComponent.vue';
 import { useMessageStore } from '@/stores/messageStore'
+import { useAttachmentStore } from "@/stores/attachmentStore";
 import { ref, defineEmits } from 'vue'
 
 const textMessage = ref('')
 const messageStore = useMessageStore()
+const attachmentsStore = useAttachmentStore()
 const emit = defineEmits(['onMessageSend'])
 messageStore.subscribe()
 
 const sendMessage = () => {
-    messageStore.sendMessage({text: textMessage.value, date: new Date()})
+    messageStore.sendMessage({text: textMessage.value, date: new Date(), attachments: attachmentsStore.attachedFiles})
+    attachmentsStore.clearAttachments()
     textMessage.value = ''
     emit("onMessageSend")
 }

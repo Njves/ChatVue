@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import { useAuthStore} from "@/stores/authStore";
 import LoginComponent from '../components/auth/LoginComponent.vue'
 import RegisterComponent from '../components/auth/RegisterComponent.vue'
 import AuthLayout from '../components/auth/AuthLayout.vue'
@@ -6,7 +7,8 @@ import RoomsList from '../components/room/RoomsList.vue'
 import NotFound from '../components/room/RoomsList.vue'
 import ChatView from '../components/chat/ChatView.vue'
 
-export default createRouter({
+
+export const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -24,12 +26,7 @@ export default createRouter({
                     path: '/register',
                     component: RegisterComponent
                 }
-            ],   
-        },
-        {
-            path: '/rooms',
-            name: 'rooms',
-            component: RoomsList
+            ],
         },
         {
             path: '/chat',
@@ -42,3 +39,9 @@ export default createRouter({
         }
     ]
 })
+
+// router.beforeEach((to, from, next) => {
+//     const auth = useAuthStore()
+//     if(auth.token === true) next({name: 'chat'})
+//     else next()
+// })

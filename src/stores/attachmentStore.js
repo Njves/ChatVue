@@ -1,35 +1,47 @@
 import { defineStore } from "pinia";
+import {useRoomStore} from "@/stores/roomStore";
+import {useAuthStore} from "@/stores/authStore";
 
-const URL = 'http://127.0.0.1/upload'
+const URL = process.env.VUE_APP_URL
 
 export const useAttachmentStore = defineStore("attachmentsStore", {
     state: () => ({
         attachedFiles: [],
-        errors: {}
+        errors: {},
+        room: useRoomStore(),
+        authStore: useAuthStore()
     }),
 
     actions: {
         async uploadFile(file) {
-            // const res = await fetch(URL, {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'multipart/form-data'
-            //   },
-            //   mode: 'cors',
-            //   body: file
-            // })
-            // const json = await res.json()
-            // if(!res.ok) {
-            //   this.errors[file] = json.error
-            //   return
-            // }
-            this.attachedFiles.push(file)
+            let formData = new FormData()
+            formData.append('room_id', this.room.currentRoom.id)
+            formData.append('file', file)
+            console.log(formData)
+            const res = await fetch(URL + '/upload', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + this.authStore.token
+                },
+                mode: 'cors',
+                credentials: 'same-origin',
+                body: formData
+            })
+            if(!res.ok) {
+                alert('Неудалось загрузить')
+                return
+            }
+            const attachments = await res.json()
+            for(const attachment of attachments) {
+                this.attachedFiles.push(attachment)
+            }
+
         },
         clearAttachments() {
-            this.attachedFiles.clear()
+            this.attachedFiles = []
         },
-        removeAttachment(file) {
-            const index = this.attachedFiles(file)
+        removeAttachment(attachment) {
+            const index = this.attachedFiles.indexOf(attachment)
             if(index !== -1)
                 this.attachedFiles.splice(index, 1)
         }

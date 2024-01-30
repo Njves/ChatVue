@@ -1,6 +1,6 @@
 <template>
     <div class="container login-form" style="max-width: 50%;">
-        <form @submit.prevent="authStore.auth('login', form)">
+        <form @submit.prevent="authStore.auth('/login', form)">
             <h2 style="padding-bottom: 8px; text-align: center;">Логин</h2>
             <div class="mb-3">
                 <label for="inputUsername" class="form-label">Имя пользователя</label>
@@ -38,12 +38,13 @@
 </template>
 <script setup>
 import { reactive } from 'vue'
-import { useAuthStore } from '../../stores/authStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useForm } from 'vee-validate';
+import * as yup from 'yup';
 
 const authStore = useAuthStore()
 
-import { useForm } from 'vee-validate';
-import * as yup from 'yup';
+
 
 const { meta, errors, defineField } = useForm({
   validationSchema: yup.object({

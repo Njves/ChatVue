@@ -1,34 +1,26 @@
 <template>
   <div class="attached-files-list d-flex flex-wrap">
     <div
-        v-for="(photo, index) in attachmentStore.attachedFiles"
+        v-for="(attachment, index) in attachmentStore.attachedFiles"
         :key="index"
         class="attached-file">
-      <button
-          class="attached-file-remove"
-      />
-      <img
-          class="attached-img"
-          :src="getSrc(photo)"
-          width="150px"
-          height="170px"
-          :alt="`Фотография ${index + 1}`">
+      <AttachedImage :attachment="attachment" :index="index" />
     </div>
   </div>
 </template>
 <script setup>
 import {useAttachmentStore} from "@/stores/attachmentStore";
-import { inject } from 'vue'
+import {inject, ref} from 'vue'
+import AttachedImage from "@/components/chat/input/AttachedImage.vue";
 
 const attachmentStore = useAttachmentStore()
-const getSrc = (photo) => {
-  return URL.createObjectURL(photo);
-}
-
 
 </script>
 <style>
 .attached-img {
   object-fit: cover;
+}
+.remove-attach {
+    opacity: 0.5
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="container login-form" style="max-width: 50%;">
-        <form @submit.prevent="authStore.auth('register', form)">
+        <form @submit.prevent="authStore.auth('/register', form)">
             <h2 style="padding-bottom: 8px; text-align: center;">Регистрация</h2>
             <div class="mb-3">
                 <label for="inputUsername" class="form-label">Имя пользователя</label>

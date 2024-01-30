@@ -1,15 +1,15 @@
 <template>
-  <div class="container m-0">
-    <div class="rooms" v-if="!roomStore.loaderRoom">
-      <Room @onRoomClick="roomStore.currentRoom = room" v-for="room in roomStore.roomList" :key="room.id" :room="room" />
-    </div>
-    <div class="rooms d-flex justify-content-center" v-else>
-      Комнаты загружаются
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
+    <div class="container m-0">
+        <div class="rooms" v-if="!roomStore.loaderRoom">
+            <Room @onRoomClick="roomStore.currentRoom = room" v-for="room in roomStore.roomList" :key="room.id" :room="room" />
+        </div>
+        <div class="rooms d-flex justify-content-center" v-else>
+            Комнаты загружаются
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
     </div>
-  </div>
 
 </template>
 <script setup>
@@ -23,9 +23,10 @@ roomStore.subscribeOnLocal()
 roomStore.getMessages()
 
 watch(() => roomStore.currentRoom, (oldRoom, newRoom) => {
-  roomStore.joinRoom()
-  roomStore.getMessages()
-}, {'flush': 'post'})
+    roomStore.joinRoom()
+    roomStore.offset = 0
+    roomStore.getMessages()
+}, {'deep': 'true'})
 
 
 </script>

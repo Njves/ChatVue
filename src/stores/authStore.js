@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
+import {router} from "@/router";
 
-const URL = 'http://127.0.0.1:5000/'
+const URL = process.env.VUE_APP_URL
 
 export const useAuthStore = defineStore("authStore", {
     state: () => ({
@@ -25,16 +26,20 @@ export const useAuthStore = defineStore("authStore", {
             this.loader = false
 
             if (!res.ok) {
-                this.error = await res.json().error
+                const json = await res.json()
+                this.error = json.error
                 return
             }
             const response = await res.json()
             this.token = response.token
             this.user = response.user
             localStorage.setItem('token', this.token)
+            await router.push('chat')
         },
         async getUser() {
-            const res = await fetch(URL + "user?token=" + localStorage.getItem('token'), {
+            if(!this.token)
+                return
+            const res = await fetch(URL + "/user?token=" + this.token, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -45,6 +50,7 @@ export const useAuthStore = defineStore("authStore", {
                 return
             }
             this.user = await res.json()
+            await router.push('chat')
         },
         getters: {
             isAuth() {
