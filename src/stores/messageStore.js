@@ -38,6 +38,18 @@ export const useMessageStore = defineStore("messageStore", {
                 }
             }
         },
+            // const res = await fetch(URL = "/message/" + message.id) {
+            //     method: 'PUT',
+            //         headers: {
+            //             Authorization: 'Bearer ' + this.authStore.token
+            //         },
+            //         credentials: 'same-origin'
+            //         body: message
+            //     }
+            // }
+            // if(!res.ok)
+            //     return
+
         async search(query) {
             const res = await fetch(URL + '/messages/' + 'search?query=' + query + '&room_id=' + this.room.currentRoom.id, {
                 method: 'GET',

@@ -11,23 +11,34 @@
 <!--            </div>-->
         </div>
     </div>
+    <ToastComponent :message="messageRef" />
 </template>
 
 <script setup>
-import MessagesList from "./MessagesList.vue"
 import RoomList from "../room/RoomsList.vue";
 import {useConnectionStore} from "@/stores/connection";
 import { useRoomStore } from "@/stores/roomStore";
 import {useAuthStore} from "@/stores/authStore";
+import ToastComponent from "@/components/ToastComponent.vue";
+import { Toast } from 'bootstrap'
+import {ref} from "vue";
 
 const authStore = useAuthStore()
 const roomStore = useRoomStore()
 const connectionStore = useConnectionStore()
+const messageRef = ref(null)
 
 authStore.getUser()
 connectionStore.connect()
 connectionStore.bindEvents()
-
+const socket = connectionStore.socket
+socket.on('notify', (message) => {
+    navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification('Новое сообщение в канале', {
+            body: message.text,
+        });
+    });
+})
 
 </script>
 <style>

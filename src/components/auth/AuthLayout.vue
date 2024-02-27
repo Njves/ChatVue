@@ -4,9 +4,12 @@
 
 <script setup>
 import {useAuthStore} from "@/stores/authStore";
+import {router} from "@/router";
 
 const authStore = useAuthStore()
-authStore.getUser()
+authStore.getUser().then(user => {
+    // router.push('chat')
+})
 </script>
 
 <style>

@@ -1,10 +1,5 @@
 <template>
-  <div class="input-wrapper" :class="{dragged: isDragged}">
-    <span v-if="isDragged">Перетащите сюда файл</span>
-    <input :ref="inputFiles" @change="uploadFile"
-           class="draggedFile" title="" type="file" multiple
-           @dragenter="isDragged = true" @dragleave="isDragged = false" />
-  </div>
+  <div></div>
 </template>
 <script setup>
 import { ref, provide } from "vue"
